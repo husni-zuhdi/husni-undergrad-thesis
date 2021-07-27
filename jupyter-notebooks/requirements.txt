@@ -1,2 +1,5 @@
 xgboost==1.4.2
 scikit-learn==0.24.2
+paramak==0.2.10
+paramak-neutronics==0.0.7
+neutronics-material-make==0.3.7
