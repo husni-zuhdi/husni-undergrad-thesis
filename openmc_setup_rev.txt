@@ -1,15 +1,33 @@
+# INSTALL MINICONDA
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+cd ~/
+mkdir miniconda
+cd ~/miniconda
+wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
+bash Miniconda3-py38_4.10.3-Linux-x86_64.sh
+source ~/.bashrc
+conda config --set auto_activate_base false
+source ~/.bashrc
+
+# INSTALL ipykernel
+conda activate base
+conda install ipykernel
+ipython kernel install --user --name=base
+
+# INSTALL CADQUERY2
+sudo apt-get install ffmpeg libsm6 libxext6  -y
+conda install -c cadquery -c conda-forge cadquery=master
+
 # INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
 sudo apt-get update
 sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran python3-pip -y
 
 # INSTALL PYTHON REQUIREMENTS
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 cd ~/iter-tritium-breeding-xgboost
 pip3 install -r jupyter-notebooks/requirements.txt
 export PATH="/home/husninaufalz/.local/bin:$PATH"
 
 # INSTALL MOAB
-
 cd ~/
 mkdir ~/MOAB
 cd ~/MOAB
@@ -73,3 +91,8 @@ cd ~/
 # Add this line to the bottom of bashrc file
 # export OPENMC_CROSS_SECTIONS='/home/husninaufalz/ND/endfb80_hdf5/cross_sections.xml'
 # source ~/.bashrc
+
+# INSTALL JUPYTERLAB
+sudo pip3 install jupyterlab
+sudo jupyter serverextension enable --py jupyterlab --sys-prefix
+jupyter lab --ip 0.0.0.0 --port 8888 --no-browser
