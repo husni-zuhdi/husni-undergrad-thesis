@@ -58,3 +58,18 @@ sudo cp ~/openmc/build/bin/openmc /usr/local/bin
 
 cd ~/openmc
 pip3 install .
+
+# DOWNLOAD ENDF/B-VIII.0 NUCLEAR DATA
+cd ~/
+mkdir ~/ND
+wget -O ~/ND/endfb80.tar.xz https://anl.box.com/shared/static/uhbxlrx7hvxqw27psymfbhi7bx7s6u6a.xz
+cd ~/ND
+tar -xvf endfb80.tar.xz
+rm endfb80.tar.xz
+
+# SET NUCLEAR DATA VARIABLE
+cd ~/
+# sudo nano ~/.bashrc
+# Add this line to the bottom of bashrc file
+# export OPENMC_CROSS_SECTIONS='/home/husninaufalz/ND/endfb80_hdf5/cross_sections.xml'
+# source ~/.bashrc
