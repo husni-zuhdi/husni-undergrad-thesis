@@ -15,4 +15,4 @@ vtk==9.0.3
 pytest==6.2.3
 jupyter-cadquery==2.2.0
 Jinja2==3.0.1
-table==3.6.1
+tables==3.6.1
