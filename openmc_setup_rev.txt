@@ -1,64 +1,60 @@
+# INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
+sudo apt-get update
+sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran python3-pip -y
+
 # INSTALL PYTHON REQUIREMENTS
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 cd ~/iter-tritium-breeding-xgboost
-pip3 install -U -r jupyter-notebooks/requirements.txt
-
-# INSTALL LAPACK AND BLAS
-sudo apt-get install libblas-dev liblapack-dev -y
-
-# INSTALL CMAKE
-sudo apt install cmake -y
-
-# INSTALL EIGEN3
-sudo apt-get install libeigen3-dev -y
-
-# INSTALL HDF5
-sudo apt-get install libhdf5-dev -y
+pip3 install -r jupyter-notebooks/requirements.txt
+export PATH="/home/husninaufalz/.local/bin:$PATH"
 
 # INSTALL MOAB
 
-cd /
-sudo mkdir /MOAB
-cd /MOAB
-sudo git clone -b Version5.1.0 https://bitbucket.org/fathomteam/moab/
-cd /MOAB
-sudo mkdir /MOAB/build
-cd /MOAB/build
-sudo cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=/MOAB -DENABLE_PYMOAB=ON
+cd ~/
+mkdir ~/MOAB
+cd ~/MOAB
+git clone -b Version5.1.0 https://bitbucket.org/fathomteam/moab/
+cd ~/MOAB
+mkdir ~/MOAB/build
+cd ~/MOAB/build
+cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=~/MOAB -DENABLE_PYMOAB=ON
+export PYTHONPATH=/home/husninaufalz/MOAB/lib/python3.8/site-packages/:$PYTHONPATH
 make
 make test install
 cd pymoab
-python3 setup.py install
-env LD_LIBRARY_PATH=/MOAB/lib:$LD_LIBRARY_PATH
+sudo python3 setup.py install
+env LD_LIBRARY_PATH=~/MOAB/lib:$LD_LIBRARY_PATH
 
 # INSTALL DAGMC
 
-cd /
-mkdir /DAGMC
-cd /DAGMC
+cd ~/
+mkdir ~/DAGMC
+cd ~/DAGMC
 git clone -b develop https://github.com/svalinn/dagmc
-cd /DAGMC
-mkdir /DAGMC/build
-cd /DAGMC/build
-cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=/DAGMC -DMOAB_DIR=/MOAB -DBUILD_STATIC_LIBS=OFF
+cd ~/DAGMC
+mkdir ~/DAGMC/build
+cd ~/DAGMC/build
+cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_P=/home/husninaufalz/DAGMC -DMOAB_DIR=/home/husninaufalz/MOAB -DBUILD_STATIC_LIBS=OFF
 make install
-rm -rf /DAGMC/dagmc
-env LD_LIBRARY_PATH=//DAGMC/lib:$LD_LIBRARY_PATH
+rm -rf ~/DAGMC/dagmc
+env LD_LIBRARY_PATH=~/DAGMC/lib:$LD_LIBRARY_PATH
+
 
 # %env FC=mpif90
 # %env CC=mpicc
 
 # INSTALL OPENMC (FROM DIFFERENT SOURCE)
 
-cd /
+cd ~/
 git clone https://github.com/openmc-dev/openmc.git
-cd /openmc
-mkdir /openmc/build
-cd /openmc/build
-cmake -Ddagmc=ON -DCMAKE_PREFIX_PATH=/DAGMC ..
+cd ~/openmc
+mkdir ~/openmc/build
+cd ~/openmc/build
+cmake -Ddagmc=ON -DCMAKE_PREFIX_PATH=~/DAGMC ..
 make
-make install
-PATH="$PATH:/openmc/build/bin"
-cp /openmc/build/bin/openmc /usr/local/bin
+sudo make install
+export PATH="$PATH:/home/husninaufalz/openmc/build/bin"
+sudo cp ~/openmc/build/bin/openmc /usr/local/bin
 
-cd /content/openmc
-pip install .
+cd ~/openmc
+pip3 install .
