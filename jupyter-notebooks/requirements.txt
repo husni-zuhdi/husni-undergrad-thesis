@@ -3,7 +3,7 @@ scikit-learn==0.24.2
 paramak==0.2.10
 paramak-neutronics==0.0.7
 neutronics-material-maker==0.3.7
-numpy==1.20.2
+numpy==1.21.1
 scipy==1.5.3
 pandas==1.2.3
 h5py==3.2.1
