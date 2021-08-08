@@ -9,15 +9,15 @@ source ~/.bashrc
 
 # INSTALL ipykernel
 conda activate base
-conda install ipykernel
+conda install ipykernel -y
 ipython kernel install --user --name=base
 
 # INSTALL CADQUERY2
+sudo apt-get update
 sudo apt-get install ffmpeg libsm6 libxext6  -y
 conda install -c cadquery -c conda-forge cadquery=master
 
 # INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
-sudo apt-get update
 sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran python3-pip -y
 
 # INSTALL PYTHON REQUIREMENTS
@@ -38,8 +38,8 @@ export PYTHONPATH=/home/husninaufalz/MOAB/lib/python3.8/site-packages/:$PYTHONPA
 make
 make test install
 cd pymoab
-sudo python3 setup.py install
-env LD_LIBRARY_PATH=~/MOAB/lib:$LD_LIBRARY_PATH
+python3 setup.py install
+export LD_LIBRARY_PATH=~/MOAB/lib:$LD_LIBRARY_PATH
 
 # INSTALL DAGMC
 
@@ -50,7 +50,7 @@ git clone -b develop https://github.com/svalinn/dagmc
 cd ~/DAGMC
 mkdir ~/DAGMC/build
 cd ~/DAGMC/build
-cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_P=/home/husninaufalz/DAGMC -DMOAB_DIR=/home/husninaufalz/MOAB -DBUILD_STATIC_LIBS=OFF
+cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=/home/husninaufalz/DAGMC -DMOAB_DIR=/home/husninaufalz/MOAB -DBUILD_STATIC_LIBS=OFF
 make install
 rm -rf ~/DAGMC/dagmc
 env LD_LIBRARY_PATH=~/DAGMC/lib:$LD_LIBRARY_PATH
@@ -87,6 +87,7 @@ rm endfb80.tar.xz
 cd ~/
 # sudo nano ~/.bashrc
 # Add this line to the bottom of bashrc file
+# # OpenMC Nuclear Database ENDF VIII.o
 # export OPENMC_CROSS_SECTIONS='/home/husninaufalz/ND/endfb80_hdf5/cross_sections.xml'
 # source ~/.bashrc
 
