@@ -434,7 +434,7 @@ if __name__ == '__main__':
     model.simulate()
     
     # open the results file
-    sp = openmc.StatePoint('statepoint.' + args.batch + '.h5')
+    sp = openmc.StatePoint('statepoint.' + int(args.batch) + '.h5')
     tbr_tally = sp.get_tally(scores=['(n,Xt)'])
     df = tbr_tally.get_pandas_dataframe()
     tbr_tally_result = df['mean'].sum()
