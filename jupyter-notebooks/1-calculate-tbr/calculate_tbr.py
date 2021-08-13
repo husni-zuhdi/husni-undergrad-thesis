@@ -13,8 +13,10 @@ def create_materials(enrich_Li, neutron_multi):
     
     Parameters:
     -----------
-    enrichment_Li : float, required
+    enrichment_Li : int, required
         Value of Li-6 enrichment in the Breeder Blanket.
+        Example
+            enrichment_Li=10 mean 10% enrichment of Li-6
     neutron_multi : float, optional
         Percentage of neutron multiplier (Natural Pb) in Moderator.
         Calculated by volume.
@@ -380,7 +382,8 @@ def create_source():
     
     return source
 
-def create_model(batch=100, part_batch=10000, enrich_Li=10, neutron_multi=0):
+def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron_multi=0):
+    enrich_Li = enrich_Li*100
     materials = create_materials(enrich_Li, neutron_multi)
     
     if neutron_multi == 0:
@@ -404,7 +407,7 @@ def create_model(batch=100, part_batch=10000, enrich_Li=10, neutron_multi=0):
         return my_model
         
     my_model = nparamak.NeutronicsModel(
-        geometry = ITERTokamak_mod(360, neutron_multi),
+        geometry = ITERTokamak_mod(360, mod_ratio),
         source = create_source(),
         simulation_batches = batch,  # this should be increased to get a better mesh tally result
         simulation_particles_per_batch = part_batch,  # this should be increased to get a better mesh tally result
@@ -429,8 +432,9 @@ if __name__ == '__main__':
     parser.add_argument('--part_batch', type=int, required=True, help="Number of particle per batch")
     parser.add_argument('--enrich_Li', type=float, required=True, help="Percentage of li-6 enrichment")
     parser.add_argument('--neutron_multi', type=float, help="Percentage of neutron multiplier (Pb) in moderator")
+    parser.add_argument('--mod_ratio', type=float, help="Percentage of moderator relatife to blanket fluid")
     args = parser.parse_args()
-    model = create_model(args.batch, args.part_batch, args.enrich_Li, args.neutron_multi)
+    model = create_model(args.batch, args.part_batch, args.enrich_Li, args.mod_ratio, args.neutron_multi)
     model.simulate()
     
     # open the results file
@@ -438,5 +442,4 @@ if __name__ == '__main__':
     tbr_tally = sp.get_tally(scores=['(n,Xt)'])
     df = tbr_tally.get_pandas_dataframe()
     tbr_tally_result = df['mean'].sum()
-    stdev_tbr_tally_result = df['mean'].std()
-    print('The tritium breeding ratio was found, TBR = ',tbr_tally_result,' ± ',stdev_tbr_tally_result)
+    print('The tritium breeding ratio was found, TBR = ',tbr_tally_result)
