@@ -32,7 +32,8 @@
 # done
 
 # Run Base Simulation with fixed code
- for i in 0.1 0.3 0.5 0.7 0.9
+#  for i in 0.1 0.3 0.5 0.7 0.9
+for i in 0.5 0.7 0.9
  do
   cd ~/iter-tritium-breeding-xgboost/jupyter-notebooks/1-calculate-tbr
   mkdir "calculate_tbr/$i-0-0-100-1000"
