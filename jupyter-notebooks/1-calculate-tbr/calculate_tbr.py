@@ -382,11 +382,11 @@ def create_source():
     
     return source
 
-def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron_multi=0):
+def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron_multi=0.):
     enrich_Li = enrich_Li*100
     materials = create_materials(enrich_Li, neutron_multi)
     
-    if neutron_multi == 0:
+    if mod_ratio == 0.:
         
         my_model = nparamak.NeutronicsModel(
             geometry = ITERTokamak_mod(),
