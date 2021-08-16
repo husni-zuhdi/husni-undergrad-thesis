@@ -1,31 +1,37 @@
-# INSTALL MINICONDA
+#!/bin/bash
+echo INSTALL MINICONDA
+echo ======================
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 cd ~/
 mkdir miniconda
 cd ~/miniconda
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
 bash Miniconda3-py38_4.10.3-Linux-x86_64.sh
+cd ~/
+rm -r ~/miniconda
 source ~/.bashrc
 
-# INSTALL ipykernel
+echo INSTALL ipykernel
+echo ======================
 conda activate base
 conda install ipykernel -y
 ipython kernel install --user --name=base
 
-# INSTALL CADQUERY2
-sudo apt-get update
-sudo apt-get install ffmpeg libsm6 libxext6  -y
-conda install -c cadquery -c conda-forge cadquery=master
-
-# INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
+echo INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
+echo ======================
 sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran python3-pip -y
 
-# INSTALL PYTHON REQUIREMENTS
+echo INSTALL CADQUERY2 and PYTHON REQUIREMENTS
+echo ======================
+sudo apt-get update
+sudo apt-get install ffmpeg libsm6 libxext6  -y
 cd ~/iter-tritium-breeding-xgboost
 pip3 install -r jupyter-notebooks/requirements.txt
-export PATH="/home/husninaufalz/.local/bin:$PATH"
+conda install -c cadquery -c conda-forge cadquery=master
+export PATH="~/.local/bin:$PATH"
 
-# INSTALL MOAB
+echo INSTALL MOAB
+echo ======================
 cd ~/
 mkdir ~/MOAB
 cd ~/MOAB
@@ -34,15 +40,15 @@ cd ~/MOAB
 mkdir ~/MOAB/build
 cd ~/MOAB/build
 cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=~/MOAB -DENABLE_PYMOAB=ON
-export PYTHONPATH=/home/husninaufalz/MOAB/lib/python3.8/site-packages/:$PYTHONPATH
+export PYTHONPATH=~/MOAB/lib/python3.8/site-packages/:$PYTHONPATH
 make
 make test install
 cd pymoab
 python3 setup.py install
 export LD_LIBRARY_PATH=~/MOAB/lib:$LD_LIBRARY_PATH
 
-# INSTALL DAGMC
-
+echo INSTALL DAGMC
+echo ======================
 cd ~/
 mkdir ~/DAGMC
 cd ~/DAGMC
@@ -50,7 +56,7 @@ git clone -b develop https://github.com/svalinn/dagmc
 cd ~/DAGMC
 mkdir ~/DAGMC/build
 cd ~/DAGMC/build
-cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=/home/husninaufalz/DAGMC -DMOAB_DIR=/home/husninaufalz/MOAB -DBUILD_STATIC_LIBS=OFF
+cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=~/DAGMC -DMOAB_DIR=~/MOAB -DBUILD_STATIC_LIBS=OFF
 make install
 rm -rf ~/DAGMC/dagmc
 env LD_LIBRARY_PATH=~/DAGMC/lib:$LD_LIBRARY_PATH
@@ -59,8 +65,8 @@ env LD_LIBRARY_PATH=~/DAGMC/lib:$LD_LIBRARY_PATH
 # %env FC=mpif90
 # %env CC=mpicc
 
-# INSTALL OPENMC (FROM DIFFERENT SOURCE)
-
+echo INSTALL OPENMC (FROM DIFFERENT SOURCE)
+echo ======================
 cd ~/
 git clone https://github.com/openmc-dev/openmc.git
 cd ~/openmc
@@ -69,13 +75,14 @@ cd ~/openmc/build
 cmake -Ddagmc=ON -DCMAKE_PREFIX_PATH=~/DAGMC ..
 make
 sudo make install
-export PATH="$PATH:/home/husninaufalz/openmc/build/bin"
+export PATH="$PATH:~/openmc/build/bin"
 sudo cp ~/openmc/build/bin/openmc /usr/local/bin
 
 cd ~/openmc
 pip3 install .
 
-# DOWNLOAD ENDF/B-VIII.0 NUCLEAR DATA
+echo DOWNLOAD ENDF/B-VIII.0 NUCLEAR DATA
+echo ======================
 cd ~/
 mkdir ~/ND
 wget -O ~/ND/endfb80.tar.xz https://anl.box.com/shared/static/uhbxlrx7hvxqw27psymfbhi7bx7s6u6a.xz
@@ -83,15 +90,15 @@ cd ~/ND
 tar -xvf endfb80.tar.xz
 rm endfb80.tar.xz
 
-# SET NUCLEAR DATA VARIABLE
+echo SET NUCLEAR DATA VARIABLE
+echo ======================
 cd ~/
-# sudo nano ~/.bashrc
-# Add this line to the bottom of bashrc file
-# # OpenMC Nuclear Database ENDF VIII.o
-# export OPENMC_CROSS_SECTIONS='/home/husninaufalz/ND/endfb80_hdf5/cross_sections.xml'
-# source ~/.bashrc
+echo "# OpenMC Nuclear Database ENDF VIII.o" >> ~/.bashrc
+echo "export OPENMC_CROSS_SECTIONS='/home/$USER/ND/endfb80_hdf5/cross_sections.xml'" >> ~/.bashrc
+source ~/.bashrc
 
-# INSTALL JUPYTERLAB
+echo INSTALL JUPYTERLAB
+echo ======================
 sudo pip3 install jupyterlab
 sudo jupyter serverextension enable --py jupyterlab --sys-prefix
 jupyter lab --ip 0.0.0.0 --port 8888 --no-browser
