@@ -1,13 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <settings>
   <run_mode>eigenvalue</run_mode>
-  <particles>500000</particles>
-  <batches>200</batches>
-  <inactive>5</inactive>
-  <keff_trigger>
-    <threshold>1e-05</threshold>
-    <type>std_dev</type>
-  </keff_trigger>
+  <particles>50000</particles>
+  <batches>4</batches>
+  <inactive>1</inactive>
+  <generations_per_batch>2</generations_per_batch>
   <source strength="1.0">
     <space origin="0.0 0.0 0.0" type="cylindrical">
       <r type="discrete">
