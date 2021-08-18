@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<materials>
+  <material id="2">
+    <density units="g/cm3" value="5.0" />
+    <nuclide ao="0.05845" name="Fe54" />
+    <nuclide ao="0.91754" name="Fe56" />
+    <nuclide ao="0.02119" name="Fe57" />
+    <nuclide ao="0.00282" name="Fe58" />
+  </material>
+</materials>

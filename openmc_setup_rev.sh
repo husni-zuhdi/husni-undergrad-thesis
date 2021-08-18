@@ -24,7 +24,7 @@ ipython kernel install --user --name=base
 echo INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
 echo ======================
 read -p "Press any key to resume ..."
-sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran python3-pip -y
+sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran imagemagick python3-pip -y
 
 echo INSTALL CADQUERY2 and PYTHON REQUIREMENTS
 echo ======================

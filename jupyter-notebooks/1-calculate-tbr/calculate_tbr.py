@@ -427,7 +427,7 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
         cell_tallies=['(n,Xt)'],
     )
     
-   geometry.export_h5m(include_plasma=True)
+    geometry.export_h5m(include_plasma=True)
     
     return my_model
 
