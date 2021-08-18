@@ -388,8 +388,9 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
     
     if mod_ratio == 0.:
         
+        geometry = ITERTokamak_mod()
         my_model = nparamak.NeutronicsModel(
-            geometry = ITERTokamak_mod(),
+            geometry = geometry,
             source = create_source(),
             simulation_batches = batch,  # this should be increased to get a better mesh tally result
             simulation_particles_per_batch = part_batch,  # this should be increased to get a better mesh tally result
@@ -404,10 +405,13 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
             cell_tallies=['(n,Xt)'],
         )
         
+        geometry.export_h5m(include_plasma=True)
+        
         return my_model
         
+    geometry = ITERTokamak_mod(360, mod_ratio)
     my_model = nparamak.NeutronicsModel(
-        geometry = ITERTokamak_mod(360, mod_ratio),
+        geometry = geometry,
         source = create_source(),
         simulation_batches = batch,  # this should be increased to get a better mesh tally result
         simulation_particles_per_batch = part_batch,  # this should be increased to get a better mesh tally result
@@ -423,6 +427,8 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
         cell_tallies=['(n,Xt)'],
     )
     
+   geometry.export_h5m(include_plasma=True)
+    
     return my_model
 
 if __name__ == '__main__':
@@ -435,7 +441,7 @@ if __name__ == '__main__':
     parser.add_argument('--mod_ratio', type=float, help="Percentage of moderator relatife to blanket fluid")
     args = parser.parse_args()
     model = create_model(args.batch, args.part_batch, args.enrich_Li, args.mod_ratio, args.neutron_multi)
-    model.simulate()
+    model.simulate(export_h5m=False)
     
     # open the results file
     sp = openmc.StatePoint('statepoint.' + str(args.batch) + '.h5')
