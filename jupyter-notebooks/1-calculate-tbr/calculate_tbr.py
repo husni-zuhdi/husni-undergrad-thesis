@@ -442,7 +442,7 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
                      'vac_vessel_mat':materials[6]},
         mesh_tally_3d=['(n,Xt)'],
         mesh_tally_2d=['(n,Xt)'],
-        cell_tallies=['(n,Xt)'],
+        cell_tallies=['(n,Xt)', 'flux'],
     )
     
     geometry.export_h5m(include_plasma=True)

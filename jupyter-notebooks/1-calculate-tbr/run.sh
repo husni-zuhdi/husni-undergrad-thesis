@@ -15,12 +15,12 @@ do
   
   # If you want to save your simulation result in a bucket (I use google cloud storage her)
   # make sure to change the name of bucket. If not, comment the code bellow
-  gsutil cp results.json gs://iter-tritium-breeding-xgboost-bucket/results/$i-$mod-$nm-100-1000.json
-  gsutil cp statepoint.100.h5 gs://iter-tritium-breeding-xgboost-bucket/statepoint/$i-$mod-$nm-100-1000.h5
-  gsutil cp tallies.out gs://iter-tritium-breeding-xgboost-bucket/tallies/$i-$mod-$nm-100-1000.out
-  gsutil cp n-Xt_on_3D_mesh.vtk gs://iter-tritium-breeding-xgboost-bucket/3D-mesh/$i-$mod-$nm-100-1000.vtk
-  gsutil cp n-Xt_on_2D_mesh_xy.png gs://iter-tritium-breeding-xgboost-bucket/2D-mesh/xy/$i-$mod-$nm-100-1000.png
-  gsutil cp n-Xt_on_2D_mesh_xz.png gs://iter-tritium-breeding-xgboost-bucket/2D-mesh/xz/$i-$mod-$nm-100-1000.png
-  gsutil cp n-Xt_on_2D_mesh_yz.png gs://iter-tritium-breeding-xgboost-bucket/2D-mesh/yz/$i-$mod-$nm-100-1000.png
+  gsutil cp results.json gs://iter-tritium-breeding-xgboost-bucket/v2/results/$i-$mod-$nm-100-1000.json
+  gsutil cp statepoint.100.h5 gs://iter-tritium-breeding-xgboost-bucket/v2/statepoint/$i-$mod-$nm-100-1000.h5
+  gsutil cp tallies.out gs://iter-tritium-breeding-xgboost-bucket/v2/tallies/$i-$mod-$nm-100-1000.out
+  gsutil cp n-Xt_on_3D_mesh.vtk gs://iter-tritium-breeding-xgboost-bucket/v2/3D-mesh/$i-$mod-$nm-100-1000.vtk
+  gsutil cp n-Xt_on_2D_mesh_xy.png gs://iter-tritium-breeding-xgboost-bucket/v2/2D-mesh/xy/$i-$mod-$nm-100-1000.png
+  gsutil cp n-Xt_on_2D_mesh_xz.png gs://iter-tritium-breeding-xgboost-bucket/v2/2D-mesh/xz/$i-$mod-$nm-100-1000.png
+  gsutil cp n-Xt_on_2D_mesh_yz.png gs://iter-tritium-breeding-xgboost-bucket/v2/2D-mesh/yz/$i-$mod-$nm-100-1000.png
 done
-# Next mod=0.1 nm=0
+# Next mod=0.1 nm=0.3
