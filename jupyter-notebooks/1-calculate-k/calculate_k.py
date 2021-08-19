@@ -103,6 +103,38 @@ class ITERTokamak_mod(paramak.Reactor):
             A list of CadQuery solids: A list of 3D solid volumes
         """
         offset_r = [55, 25, 64, 21, 55]
+    
+        # Blanket first wall
+        blanket_first_wall = paramak.BlanketFP(
+            plasma=self.plasma,
+            thickness=4,
+            start_angle=-70,
+            stop_angle=230,
+            rotation_angle=self.rotation_angle,
+            vertical_displacement=self.plasma.vertical_displacement,
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [50, 20, 59, 16, 50]],
+            name='blanket_first_wall | SS 316',
+            color=(0.6,0.7,1.0),
+            stp_filename="blanket_first_wall.stp",
+            stl_filename="blanket_first_wall.stl",
+            material_tag='blanket_first_wall_mat',
+        )
+        
+        # Front Breeder Zone
+        front_breeder = paramak.BlanketFP(
+            plasma=self.plasma,
+            thickness=1,
+            start_angle=-70,
+            stop_angle=230,
+            rotation_angle=self.rotation_angle,
+            vertical_displacement=self.plasma.vertical_displacement,
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [54, 24, 63, 20, 54]],
+            name='front_breeder | LiF',
+            color=(0.9,0.9,0),
+            stp_filename="front_breeder.stp",
+            stl_filename="front_breeder.stl",
+            material_tag='blanket_fluid_mat',
+        )
         
         # Blanket reflector
         blanket_ref = paramak.BlanketFP(
@@ -118,22 +150,6 @@ class ITERTokamak_mod(paramak.Reactor):
             stp_filename="blanket_ref.stp",
             stl_filename="blanket_ref.stl",
             material_tag='blanket_ref_mat',
-        )
-    
-        # Blanket first wall
-        blanket_first_wall = paramak.BlanketFP(
-            plasma=self.plasma,
-            thickness=5,
-            start_angle=-70,
-            stop_angle=230,
-            rotation_angle=self.rotation_angle,
-            vertical_displacement=self.plasma.vertical_displacement,
-            offset_from_plasma=[[-70, 0, 90, 180, 230], [50, 20, 59, 16, 50]],
-            name='blanket_first_wall | SS 316',
-            color=(0.6,0.7,1.0),
-            stp_filename="blanket_first_wall.stp",
-            stl_filename="blanket_first_wall.stl",
-            material_tag='blanket_first_wall_mat',
         )
 
         # SN Divertor
@@ -270,7 +286,7 @@ class ITERTokamak_mod(paramak.Reactor):
                 material_tag='blanket_fluid_mat',
             )
             
-            return [divertor, blanket_fluid, blanket_ref, blanket_first_wall, vac_vessel, vac_vessel_inner]
+            return [divertor, blanket_fluid, front_breeder, blanket_ref, blanket_first_wall, vac_vessel, vac_vessel_inner]
             
         # Blanket Fluid
         blanket_fluid = paramak.BlanketFP(
@@ -281,7 +297,7 @@ class ITERTokamak_mod(paramak.Reactor):
             rotation_angle=self.rotation_angle,
             vertical_displacement=self.plasma.vertical_displacement,
             offset_from_plasma=[[-70, 0, 90, 180, 230], [x+30*(self.blanket_mod_ratio) for x in offset_r]],
-            name='blanket_fluid | LIF',
+            name='blanket_fluid | LiF',
             color=(0.9,0.9,0),
             stp_filename="blanket_fluid.stp",
             stl_filename="blanket_fluid.stl",
@@ -304,7 +320,7 @@ class ITERTokamak_mod(paramak.Reactor):
             material_tag='blanket_mod_mat',
         )
 
-        return [divertor, blanket_fluid, blanket_ref, blanket_mod, blanket_first_wall, vac_vessel, vac_vessel_inner]
+        return [divertor, blanket_fluid, front_breeder, blanket_ref, blanket_mod, blanket_first_wall, vac_vessel, vac_vessel_inner]
     
     
     def create_plasma(self) -> list:
@@ -374,6 +390,7 @@ source.space = openmc.stats.CylindricalIndependent(r=radius,
                                                    origin=(0.0, 0.0, 0.0))
 # sets the direction to isotropic
 source.angle = openmc.stats.Isotropic()
+
 # sets the discrite energy distribution at 14.08 MeV
 source.energy = openmc.stats.Discrete([14.08e6], [1.0])
 source.particle = 'neutron'
