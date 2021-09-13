@@ -2,10 +2,10 @@
 
 # Change mod and nm number
 # export mod=0
-export mod=0.7
-for nm in 0.3 0.5
+export mod=0.9
+for nm in 0.9
 do
-  for i in 0.1 0.3 0.5 0.7 0.9
+  for i in 0.5 0.7 0.9
   do
     cd ~/iter-tritium-breeding-xgboost/jupyter-notebooks/1-calculate-tbr
     mkdir  "calculate_tbr/$i-$mod-$nm-100-1000"
@@ -28,4 +28,4 @@ do
     gsutil cp n-Xt_on_2D_mesh_yz.png gs://iter-tritium-breeding-xgboost-bucket/v2/2D-mesh/yz/$i-$mod-$nm-100-1000.png
   done
 done
-# Next mod=0.7 nm=0.7 and nm=0.9
+# Done
