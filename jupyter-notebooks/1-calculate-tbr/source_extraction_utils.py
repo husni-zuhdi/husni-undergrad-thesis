@@ -24,7 +24,7 @@ def create_inital_particles(source, number_of_particles=2000):
     # GEOMETRY
 
     # just a minimal geometry
-    outer_surface = openmc.Sphere(r=100, boundary_type='vacuum')
+    outer_surface = openmc.Sphere(r=10000, boundary_type='vacuum')
     cell = openmc.Cell(region=-outer_surface)
     universe = openmc.Universe(cells=[cell])
     geom = openmc.Geometry(universe)
