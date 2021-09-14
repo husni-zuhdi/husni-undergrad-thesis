@@ -35,6 +35,16 @@ def create_materials(enrich_Li, neutron_multi):
     plasma_mat.name = 'plasma_mat'
     plasma_mat.openmc_material
     
+    # Plasma Facing Material
+    blanket_pfc_mat = nmm.Material.from_library('Beryllium')
+    blanket_pfc_mat.name = 'blanket_pfc_mat'
+    blanket_pfc_mat.openmc_material
+    
+    # Cooper Alloy Heat Sink
+    blanket_heat_sink_mat = nmm.Material.from_library('CuCrZr')
+    blanket_heat_sink_mat.name = 'blanket_heat_sink_mat'
+    blanket_heat_sink_mat.openmc_material
+    
     # Blanket Fluid Material
     blanket_fluid_mat = nmm.Material.from_library(name='Lithium Fluoride',
                                             enrichment=enrich_Li,
@@ -75,9 +85,9 @@ def create_materials(enrich_Li, neutron_multi):
     blanket_ref_mat.openmc_material
     
     # First Wall Material
-    blanket_first_wall_mat = nmm.Material.from_library('Steel, Stainless 316')
-    blanket_first_wall_mat.name = 'blanket_first_wall_mat'
-    blanket_first_wall_mat.openmc_material
+    blanket_first_wall_bp_mat = nmm.Material.from_library('Steel, Stainless 316')
+    blanket_first_wall_bp_mat.name = 'blanket_first_wall_bp_mat'
+    blanket_first_wall_bp_mat.openmc_material
     
     # Divertor Material
     divertor_mat = nmm.Material.from_library('Steel, Stainless 316')
@@ -89,7 +99,17 @@ def create_materials(enrich_Li, neutron_multi):
     vac_vessel_mat.name = 'vac_vessel_mat'
     vac_vessel_mat.openmc_material
     
-    return [plasma_mat, blanket_fluid_mat, blanket_mod_mat, blanket_ref_mat, blanket_first_wall_mat, divertor_mat, vac_vessel_mat]
+    materials = [plasma_mat,
+                 blanket_fluid_mat,
+                 blanket_mod_mat,
+                 blanket_ref_mat,
+                 blanket_first_wall_bp_mat,
+                 blanket_pfc_mat,
+                 blanket_heat_sink_mat,
+                 divertor_mat,
+                 vac_vessel_mat]
+    
+    return materials
 
 # Color list : https://www.tug.org/pracjourn/2007-4/walden/color.pdf
 # Make a ITER Tokamak Geometry Class
@@ -113,28 +133,60 @@ class ITERTokamak_mod(paramak.Reactor):
         Returns:
             A list of CadQuery solids: A list of 3D solid volumes
         """
-        offset_r = [55, 25, 64, 21, 55]
+        offset_r = [59, 29, 68, 25, 59]
     
-        # Blanket first wall
-        blanket_first_wall = paramak.BlanketFP(
+        # Blanket first wall back-plate
+        blanket_first_wall_bp = paramak.BlanketFP(
             plasma=self.plasma,
-            thickness=4,
+            thickness=5,
             start_angle=-70,
             stop_angle=230,
             rotation_angle=self.rotation_angle,
             vertical_displacement=self.plasma.vertical_displacement,
-            offset_from_plasma=[[-70, 0, 90, 180, 230], [50, 20, 59, 16, 50]],
-            name='blanket_first_wall | SS 316',
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [49, 19, 58, 15, 49]],
+            name='blanket_first_wall_bp | SS 316',
             color=(0.6,0.7,1.0),
-            stp_filename="blanket_first_wall.stp",
-            stl_filename="blanket_first_wall.stl",
-            material_tag='blanket_first_wall_mat',
+            stp_filename="blanket_first_wall_bp.stp",
+            stl_filename="blanket_first_wall_bp.stl",
+            material_tag='blanket_first_wall_bp_mat',
+        )
+        
+        # Blanket plasma facing material
+        blanket_pfc = paramak.BlanketFP(
+            plasma=self.plasma,
+            thickness=1,
+            start_angle=-70,
+            stop_angle=230,
+            rotation_angle=self.rotation_angle,
+            vertical_displacement=self.plasma.vertical_displacement,
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [46, 16, 55, 12, 46]],
+            name='blanket_pfc | Beryllium',
+            color=(1,0,0),
+            stp_filename="blanket_pfc.stp",
+            stl_filename="blanket_pfc.stl",
+            material_tag='blanket_pfc_mat',
+        )
+        
+        # Blanket heat sink
+        blanket_heat_sink = paramak.BlanketFP(
+            plasma=self.plasma,
+            thickness=2,
+            start_angle=-70,
+            stop_angle=230,
+            rotation_angle=self.rotation_angle,
+            vertical_displacement=self.plasma.vertical_displacement,
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [47, 17, 56, 13, 47]],
+            name='blanket_heat_sink | CuCrZr',
+            color=(0.7,0.3,0),
+            stp_filename="blanket_heat_sink.stp",
+            stl_filename="blanket_heat_sink.stl",
+            material_tag='blanket_heat_sink_mat',
         )
         
         # Front Breeder Zone
         front_breeder = paramak.BlanketFP(
             plasma=self.plasma,
-            thickness=1,
+            thickness=5,
             start_angle=-70,
             stop_angle=230,
             rotation_angle=self.rotation_angle,
@@ -150,12 +202,12 @@ class ITERTokamak_mod(paramak.Reactor):
         # Blanket reflector
         blanket_ref = paramak.BlanketFP(
             plasma=self.plasma,
-            thickness=15,
+            thickness=5,
             start_angle=-70,
             stop_angle=230,
             rotation_angle=self.rotation_angle,
             vertical_displacement=self.plasma.vertical_displacement,
-            offset_from_plasma=[[-70, 0, 90, 180, 230], [85, 55, 94, 51, 85]],
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [99, 69, 108, 65, 99]],
             name='blanket_ref | Graphite',
             color=(0.9,0.4,0),
             stp_filename="blanket_ref.stp",
@@ -168,8 +220,8 @@ class ITERTokamak_mod(paramak.Reactor):
             anchors=((4.34e2, -3.3e2), (5.56e2, -3.74e2)),
             coverages=(105, 125),
             lengths=(45, 75),
-            radii=(68, 65),
-            tilts=(-30, 2),
+            radii=(68, 65), # radii=(68, 65),
+            tilts=(-43, 9), # tilts=(-30, 2),
             dome_height=45,
             dome_pos=0.45,
             rotation_angle=self.rotation_angle,
@@ -284,7 +336,7 @@ class ITERTokamak_mod(paramak.Reactor):
             # Blanket Fluid
             blanket_fluid = paramak.BlanketFP(
                 plasma=self.plasma,
-                thickness=30,
+                thickness=40,
                 start_angle=-70,
                 stop_angle=230,
                 rotation_angle=self.rotation_angle,
@@ -297,17 +349,17 @@ class ITERTokamak_mod(paramak.Reactor):
                 material_tag='blanket_fluid_mat',
             )
             
-            return [divertor, blanket_fluid, front_breeder, blanket_ref, blanket_first_wall, vac_vessel, vac_vessel_inner]
+            return [divertor, blanket_fluid, front_breeder, blanket_ref, blanket_heat_sink, blanket_pfc, blanket_first_wall_bp, vac_vessel, vac_vessel_inner]
             
         # Blanket Fluid
         blanket_fluid = paramak.BlanketFP(
             plasma=self.plasma,
-            thickness=30*(1-self.blanket_mod_ratio),
+            thickness=40*(1-self.blanket_mod_ratio),
             start_angle=-70,
             stop_angle=230,
             rotation_angle=self.rotation_angle,
             vertical_displacement=self.plasma.vertical_displacement,
-            offset_from_plasma=[[-70, 0, 90, 180, 230], [x+30*(self.blanket_mod_ratio) for x in offset_r]],
+            offset_from_plasma=[[-70, 0, 90, 180, 230], [x+40*(self.blanket_mod_ratio) for x in offset_r]],
             name='blanket_fluid | LiF',
             color=(0.9,0.9,0),
             stp_filename="blanket_fluid.stp",
@@ -318,12 +370,12 @@ class ITERTokamak_mod(paramak.Reactor):
         # Blanket Moderator
         blanket_mod = paramak.BlanketFP(
             plasma=self.plasma,
-            thickness=30*(self.blanket_mod_ratio),
+            thickness=40*(self.blanket_mod_ratio),
             start_angle=-70,
             stop_angle=230,
             rotation_angle=self.rotation_angle,
             vertical_displacement=self.plasma.vertical_displacement,
-            offset_from_plasma=[[-70, 0, 90, 180, 230], [55, 25, 64, 21, 55]],
+            offset_from_plasma=[[-70, 0, 90, 180, 230], offset_r],
             name='blanket_mod | Graphite (+ Pb)',
             color=(0.3,0.3,0),
             stp_filename="blanket_mod.stp",
@@ -331,7 +383,7 @@ class ITERTokamak_mod(paramak.Reactor):
             material_tag='blanket_mod_mat',
         )
 
-        return [divertor, blanket_fluid, front_breeder, blanket_ref, blanket_mod, blanket_first_wall, vac_vessel, vac_vessel_inner]
+        return [divertor, blanket_fluid, front_breeder, blanket_ref, blanket_mod, blanket_heat_sink, blanket_pfc, blanket_first_wall_bp, vac_vessel, vac_vessel_inner]
     
     
     def create_plasma(self) -> list:
@@ -374,26 +426,32 @@ class ITERTokamak_mod(paramak.Reactor):
         return shapes_and_components
     
 def create_source():
-    # Initialises a new source object
+    # initialises a new source object
     source = openmc.Source()
-    
-    # The distribution of source radius
-    radius = openmc.stats.Discrete([545, 570, 620, 670, 695], [1, 1, 1, 1, 1])
-    
-    # The distribution of source z values
-    z_values = openmc.stats.Discrete([-25, -15, -5, 5, 15, 25], [0.9, 1, 1, 1, 1, 0.9])
-    
-    # The distribution of source azimuthal angles values is a uniform distribution between 0 and 2 Pi
+
+    # the distribution of radius is just a single value
+    # radius = openmc.stats.Discrete([10], [1])
+    radius = openmc.stats.Discrete([420, 500, 560, 600, 620, 640, 680, 740, 820],
+                                   [0.2, 0.5, 1, 1, 1, 1, 1, 0.5, 0.2])
+
+    # the distribution of source z values is just a single value
+    z_values = openmc.stats.Discrete([-620, -200, -120, -60, -20, 0, 20, 60, 120, 200, 620],
+                                     [0.001, 0.2, 0.5, 1, 1, 1, 1, 1, 0.5, 0.2, 0.001])
+    # z_values = openmc.stats.Discrete([-0.5, 0, 0.5], [1, 1, 1])
+
+    # the distribution of source azimuthal angles values is a uniform distribution between 0 and 2 Pi
     angle = openmc.stats.Uniform(a=0., b=2* 3.14159265359)
-    
-    # This makes the ring source using the three distributions and a radius
+
+    # this makes the ring source using the three distributions and a radius
     source.space = openmc.stats.CylindricalIndependent(r=radius, phi=angle, z=z_values, origin=(0.0, 0.0, 0.0))
-    
-    # Sets the direction to isotropic
+
+    # sets the direction to isotropic
     source.angle = openmc.stats.Isotropic()
-    
-    # Sets the discrite energy distribution at 14.08 MeV
-    source.energy = openmc.stats.Discrete([14.08e6], [1.0])
+
+    # sets the energy distribution to a Muir distribution neutrons
+    m_react = 5.0 # Mass of D (2) + T (3) in AMU
+    kt = 36400.0 # Ion Temperature
+    source.energy = openmc.stats.Muir(e0=14100000.0, m_rat=m_react, kt=kt)
     
     # Sets the source particle
     source.particle = 'neutron'
@@ -410,17 +468,18 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
         my_model = nparamak.NeutronicsModel(
             geometry = geometry,
             source = create_source(),
-            simulation_batches = batch,  # this should be increased to get a better mesh tally result
-            simulation_particles_per_batch = part_batch,  # this should be increased to get a better mesh tally result
+            simulation_batches = batch,
+            simulation_particles_per_batch = part_batch,
             materials = {'plasma_mat':materials[0],
-                         'divertor_mat':materials[5],
+                         'divertor_mat':materials[7],
                          'blanket_fluid_mat':materials[1],
                          'blanket_ref_mat':materials[3],
-                         'blanket_first_wall_mat':materials[4],
-                         'vac_vessel_mat':materials[6]},
-            mesh_tally_3d=['(n,Xt)'],
-            mesh_tally_2d=['(n,Xt)'],
-            cell_tallies=['(n,Xt)', 'flux'],
+                         'blanket_pfc_mat':materials[5],
+                         'blanket_heat_sink_mat':materials[6],
+                         'blanket_first_wall_bp_mat':materials[4],
+                         'vac_vessel_mat':materials[8]},
+            cell_tallies=['(n,Xt)'],
+            photon_transport=False,
         )
         
         geometry.export_h5m(include_plasma=True)
@@ -431,18 +490,19 @@ def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron
     my_model = nparamak.NeutronicsModel(
         geometry = geometry,
         source = create_source(),
-        simulation_batches = batch,  # this should be increased to get a better mesh tally result
-        simulation_particles_per_batch = part_batch,  # this should be increased to get a better mesh tally result
+        simulation_batches = batch,
+        simulation_particles_per_batch = part_batch,
         materials = {'plasma_mat':materials[0],
-                     'divertor_mat':materials[5],
+                     'divertor_mat':materials[7],
                      'blanket_fluid_mat':materials[1],
-                     'blanket_mod_mat':materials[2],
                      'blanket_ref_mat':materials[3],
-                     'blanket_first_wall_mat':materials[4],
-                     'vac_vessel_mat':materials[6]},
-        mesh_tally_3d=['(n,Xt)'],
-        mesh_tally_2d=['(n,Xt)'],
-        cell_tallies=['(n,Xt)', 'flux'],
+                     'blanket_mod_mat':materials[2],
+                     'blanket_pfc_mat':materials[5],
+                     'blanket_heat_sink_mat':materials[6],
+                     'blanket_first_wall_bp_mat':materials[4],
+                     'vac_vessel_mat':materials[8]},
+        cell_tallies=['(n,Xt)'],
+        photon_transport=False,
     )
     
     geometry.export_h5m(include_plasma=True)
