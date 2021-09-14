@@ -2,8 +2,8 @@
 
 # Change mod and nm number
 # export mod=0
-export mod=0
-for nm in 0 0.9
+export mod=0.0
+for nm in 0.0 0.9
 do
   for i in 0.1 0.3 0.5 0.7 0.9
   do
@@ -28,15 +28,15 @@ do
     gsutil cp n-Xt_on_2D_mesh_yz.png gs://iter-tritium-breeding-xgboost-bucket/v3/2D-mesh/yz/$i-$mod-$nm-100-1000.png
   done
 done
-# AWS mod 0 nm 0.1 0.3 0.5 0.7
+# AWS mod 0.0 nm 0.1 0.3 0.5 0.7
 # AWS mod 0.1 nm 0.1 0.3 0.5 0.7
 # AWS mod 0.3 nm 0.1 0.3 0.5 0.7
 # AWS mod 0.5 nm 0.1 0.3 0.5 0.7
 # AWS mod 0.7 nm 0.1 0.3 0.5 0.7
 # AWS mod 0.9 nm 0.1 0.3 0.5 0.7
-# GCP mod 0 nm 0 0.9
-# GCP mod 0.1 nm 0 0.9
-# GCP mod 0.3 nm 0 0.9
-# GCP mod 0.5 nm 0 0.9
-# GCP mod 0.7 nm 0 0.9
-# GCP mod 0.9 nm 0 0.9
+# GCP mod 0.0 nm 0.0 0.9
+# GCP mod 0.1 nm 0.0 0.9
+# GCP mod 0.3 nm 0.0 0.9
+# GCP mod 0.5 nm 0.0 0.9
+# GCP mod 0.7 nm 0.0 0.9
+# GCP mod 0.9 nm 0.0 0.9
