@@ -49,7 +49,9 @@ def create_materials(enrich_Li, neutron_multi):
     blanket_fluid_mat = nmm.Material.from_library(name='Lithium Fluoride',
                                             enrichment=enrich_Li,
                                             enrichment_target='Li6',
-                                            enrichment_type='ao'
+                                            enrichment_type='ao',
+                                            temperature=1200,
+                                            temperature_to_neutronics_code=True,
                                            )
     blanket_fluid_mat.name = 'blanket_fluid_mat'
     blanket_fluid_mat.openmc_material
@@ -69,7 +71,9 @@ def create_materials(enrich_Li, neutron_multi):
     
     blanket_mod_mat = nmm.Material.from_mixture(materials=[neutron_multi_mat, mod_mat],
                             fracs=[neutron_multi, (1-neutron_multi)],
-                            percent_type='vo')
+                            percent_type='vo',
+                            temperature=600,
+                            temperature_to_neutronics_code=True,)
     blanket_mod_mat.name = 'blanket_mod_mat'
     blanket_mod_mat.openmc_material
     
@@ -435,8 +439,8 @@ def create_source():
                                    [0.2, 0.5, 1, 1, 1, 1, 1, 0.5, 0.2])
 
     # the distribution of source z values is just a single value
-    z_values = openmc.stats.Discrete([-620, -200, -120, -60, -20, 0, 20, 60, 120, 200, 620],
-                                     [0.001, 0.2, 0.5, 1, 1, 1, 1, 1, 0.5, 0.2, 0.001])
+    z_values = openmc.stats.Discrete([-200, -120, -60, -20, 0, 20, 60, 120, 200],
+                                     [0.2, 0.5, 1, 1, 1, 1, 1, 0.5, 0.2])
     # z_values = openmc.stats.Discrete([-0.5, 0, 0.5], [1, 1, 1])
 
     # the distribution of source azimuthal angles values is a uniform distribution between 0 and 2 Pi
@@ -458,7 +462,7 @@ def create_source():
     
     return source
 
-def create_model(batch=100, part_batch=1000, enrich_Li=0.1, mod_ratio=0, neutron_multi=0.):
+def create_model(batch=20, part_batch=5000, enrich_Li=0.1, mod_ratio=0, neutron_multi=0.):
     enrich_Li = enrich_Li*100
     materials = create_materials(enrich_Li, neutron_multi)
     
