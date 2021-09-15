@@ -20,7 +20,7 @@ do
     # If you want to save your simulation result in a bucket (I use google cloud storage her)
     # make sure to change the name of bucket. If not, comment the code bellow
     gsutil cp results.json gs://iter-tritium-breeding-xgboost-bucket/v3/results/$i-$mod-$nm-20-5000.json
-    gsutil cp statepoint.100.h5 gs://iter-tritium-breeding-xgboost-bucket/v3/statepoint/$i-$mod-$nm-20-5000.h5
+    gsutil cp statepoint.20.h5 gs://iter-tritium-breeding-xgboost-bucket/v3/statepoint/$i-$mod-$nm-20-5000.h5
     gsutil cp tallies.out gs://iter-tritium-breeding-xgboost-bucket/v3/tallies/$i-$mod-$nm-20-5000.out
     gsutil cp n-Xt_on_3D_mesh.vtk gs://iter-tritium-breeding-xgboost-bucket/v3/3D-mesh/$i-$mod-$nm-20-5000.vtk
     gsutil cp n-Xt_on_2D_mesh_xy.png gs://iter-tritium-breeding-xgboost-bucket/v3/2D-mesh/xy/$i-$mod-$nm-20-5000.png
