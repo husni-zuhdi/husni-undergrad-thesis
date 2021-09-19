@@ -2,10 +2,10 @@
 
 # Change mod and nm number
 # export mod=0
-export mod=0.0
-for nm in 0.1 0.3 0.5 0.7
+export i=0.9
+for nm in 0.9
 do
-  for i in 0.1 0.3 0.5 0.7 0.9
+  for mod in 0.2 0.4 0.6 0.8
   do
     cd ~/iter-tritium-breeding-xgboost/jupyter-notebooks/1-calculate-tbr
     mkdir  "calculate_tbr/$i-$mod-$nm-20-5000"
