@@ -1,4 +1,4 @@
-# Optimization of ITER Blanket Design for Tritium Breeding Using Monte Carlo Method Coupled with Machine Learning
+# Optimization of ITER Blanket Design for Tritium Breeding Using OpenMC
 
 This repository is part of undergraduate thesis by Husni Naufal Zuhdi (413821) to pursue nuclear engineering degree in Nuclear Engineering and Physics Engineering Departement at Universitas Gadjah Mada.
 
