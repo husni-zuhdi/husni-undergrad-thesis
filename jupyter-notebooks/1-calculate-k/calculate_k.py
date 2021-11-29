@@ -1,7 +1,3 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
 import openmc
 import paramak
 import paramak_neutronics as nparamak
@@ -413,9 +409,8 @@ geom.export_to_xml()
 # # Instantiate a Settings object
 sett = openmc.Settings()
 sett.particles = 50000
-sett.generations_per_batch = 2
-sett.batches = 4
-sett.inactive = 1
+sett.batches = 40
+sett.inactive = 10
 sett.dagmc = True
 sett.run_mode = 'eigenvalue'
 sett.source = source
