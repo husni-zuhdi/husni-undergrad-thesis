@@ -3,13 +3,12 @@ echo INSTALL MINICONDA
 echo ======================
 read -p "Press any key to resume ..."
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-cd ~/
-mkdir miniconda
-cd ~/miniconda
+mkdir /tmp/iter-tritium-breeding-xgboost/miniconda
+cd /tmp/iter-tritium-breeding-xgboost/
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
-bash Miniconda3-py38_4.10.3-Linux-x86_64.sh -b -u -p ~/miniconda3
-cd ~/
-rm -r ~/miniconda
+bash Miniconda3-py38_4.10.3-Linux-x86_64.sh -b -u -p /tmp/iter-tritium-breeding-xgboost/miniconda3
+cd /tmp/iter-tritium-breeding-xgboost/
+rm -r /tmp/iter-tritium-breeding-xgboost/miniconda
 source ~/.bashrc
 
 echo INSTALL ipykernel
