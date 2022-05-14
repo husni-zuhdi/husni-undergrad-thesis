@@ -14,7 +14,7 @@ lxml>=4.6.5
 Cython==0.29.22
 vtk==9.0.3
 pytest==6.2.3
-jupyter-cadquery==2.2.0
+jupyter-cadquery==3.0.0
 Jinja2==3.0.1
 tables==3.6.1
 # Additional for ML implementation
