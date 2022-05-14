@@ -43,7 +43,7 @@ echo INSTALL CADQUERY2 and PYTHON REQUIREMENTS
 echo ======================
 read -p "Press any key to resume ..."
 pip3 install -r ~/iter-tritium-breeding-xgboost/requirements.txt
-conda install -c cadquery -c conda-forge cadquery=2 -y
+conda install -c cadquery -c conda-forge cadquery=2.1 -y
 export PATH="~/.local/bin:$PATH"
 
 echo INSTALL MOAB
