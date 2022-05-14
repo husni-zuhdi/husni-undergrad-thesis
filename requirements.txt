@@ -4,7 +4,6 @@ openmc-dagmc-wrapper==0.3.1
 neutronics-material-maker==1.1.1
 # OpenMC requirements
 numpy==1.21.1
-scipy==1.5.3
 pandas==1.2.3
 h5py==3.2.1
 matplotlib==3.4.1
