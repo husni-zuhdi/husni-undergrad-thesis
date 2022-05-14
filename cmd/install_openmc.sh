@@ -2,37 +2,48 @@
 echo INSTALL MINICONDA
 echo ======================
 read -p "Press any key to resume ..."
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-mkdir /tmp/iter-tritium-breeding-xgboost/miniconda
-cd /tmp/iter-tritium-breeding-xgboost/
-wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
-bash Miniconda3-py38_4.10.3-Linux-x86_64.sh -b -u -p /tmp/iter-tritium-breeding-xgboost/miniconda3
-cd /tmp/iter-tritium-breeding-xgboost/
-rm -r /tmp/iter-tritium-breeding-xgboost/miniconda
-source ~/.bashrc
+# sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+mkdir -p /tmp/installation/miniconda
+cd /tmp/installation/miniconda
+wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh -O miniconda.sh
+bash miniconda.sh -b -u -p ~/miniconda3
+cd /tmp/installation/
+rm -r /tmp/installation/miniconda
+eval "$(~/miniconda3/bin/conda shell.bash hook)"
+conda init
+conda config --set auto_activate_base true
 
 echo INSTALL ipykernel
 echo ======================
 read -p "Press any key to resume ..."
-source ~/.bashrc
-conda init bash
-conda activate base
+# source ~/.bashrc
+# conda init bash
+# conda activate base
 conda install ipykernel -y
 ipython kernel install --user --name=base
 
 echo INSTALL CMAKE, LAPACK, BLAS, EIGEN3, HDF5, AND GFORTRAN
 echo ======================
 read -p "Press any key to resume ..."
-sudo apt-get install cmake libblas-dev liblapack-dev libeigen3-dev libhdf5-dev gfortran imagemagick python3-pip -y
+sudo apt-get update
+sudo apt install \
+cmake \
+libblas-dev \
+liblapack-dev \
+libeigen3-dev \
+libhdf5-dev \
+gfortran \
+imagemagick \
+ffmpeg \
+libsm6 \
+libxext6 \
+python3-pip -y
 
 echo INSTALL CADQUERY2 and PYTHON REQUIREMENTS
 echo ======================
 read -p "Press any key to resume ..."
-sudo apt-get update
-sudo apt-get install ffmpeg libsm6 libxext6  -y
-cd ~/iter-tritium-breeding-xgboost
-pip3 install -r jupyter-notebooks/requirements.txt
-conda install -c cadquery -c conda-forge cadquery=master -y
+pip3 install -r ~/iter-tritium-breeding-xgboost/requirements.txt
+conda install -c cadquery -c conda-forge cadquery=2 -y
 export PATH="~/.local/bin:$PATH"
 
 echo INSTALL MOAB
