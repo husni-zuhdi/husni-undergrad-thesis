@@ -1,6 +1,6 @@
 # Main usage
 paramak==0.2.10
-paramak-neutronics==0.0.7
+openmc-dagmc-wrapper==0.0.7
 neutronics-material-maker==0.3.7
 # OpenMC requirements
 numpy==1.21.1
