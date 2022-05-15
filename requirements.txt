@@ -1,0 +1,21 @@
+# Main usage
+paramak==0.8.1
+openmc-dagmc-wrapper==0.3.1
+neutronics-material-maker==1.1.1
+# OpenMC requirements
+numpy==1.21.1
+pandas==1.2.3
+h5py==3.2.1
+matplotlib==3.4.2
+uncertainties==3.1.5
+lxml>=4.6.5
+# Dunno
+Cython==0.29.22
+vtk==9.0.3
+pytest==6.2.3
+jupyter-cadquery==3.0.0
+Jinja2==3.0.1
+tables==3.6.1
+# Additional for ML implementation
+#xgboost==1.4.2
+#scikit-learn==0.24.2
